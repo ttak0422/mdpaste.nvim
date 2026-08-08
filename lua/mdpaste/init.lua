@@ -68,6 +68,8 @@ function M.html_to_md(html)
 
   s = s:gsub("<[^>]->", "")
   s = decode_entities(s)
+  -- Browsers may encode a leading HTML space as a non-breaking space.
+  s = s:gsub(vim.fn.nr2char(160), " ")
 
   s = s:gsub("[ \t]*\n[ \t]*", "\n")
   s = s:gsub("\n\n\n+", "\n\n")
