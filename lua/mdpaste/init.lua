@@ -109,7 +109,10 @@ function M.paste()
   if text == "" then
     return
   end
-  vim.api.nvim_put(vim.split(text, "\n"), "c", true, true)
+  -- Insert mode's cursor marks the insertion point, before the next character.
+  -- Putting after it moves existing whitespace (or text) ahead of the paste.
+  local after = vim.api.nvim_get_mode().mode:sub(1, 1) ~= "i"
+  vim.api.nvim_put(vim.split(text, "\n"), "c", after, true)
 end
 
 return M
